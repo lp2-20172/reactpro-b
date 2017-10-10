@@ -7,7 +7,7 @@ const getList = (q = '') => {
             .then((r) => {
                 dispatch({
                     "type": CATEGORIA_LIST,
-                    list: r.data
+                    "list": r.data
                 })
             })
             .catch(function (error) {
@@ -17,28 +17,33 @@ const getList = (q = '') => {
 }
 
 export const CATEGORIA_ADD = "CATEGORIA_ADD"
+//export function createSuccess(d) {
+//    return { type: CATEGORIA_ADD, d }
+//}
+export function save(data, history) {
+    console.log('save history:' + JSON.stringify(history))
+    console.log('save data:' + JSON.stringify(data))
 
-const save = (data) => {
-    return (dispatch) => {
-        axios.post('http://localhost:8003/api/catalogo/categorias/',
+    return function (dispatch) {
+        return axios.post('http://localhost:8003/api/catalogo/categorias/',
             data)
             .then((r) => {
-                
+
                 dispatch({
                     "type": CATEGORIA_ADD,
-                    data: r.data
+                    "data": r.data
                 })
-                //return r
-                
-                //console.log('r:' + JSON.stringify(r))
-                
+                //dispatch(createSuccess(r));
+                history.push('/categorias/list')
+
             })
-            .catch( (error) =>{
+            .catch((error) => {
                 console.log(error)
+                throw (error);
                 //return Promise
             })
     }
 }
 
 
-export { getList, save }
+export { getList }

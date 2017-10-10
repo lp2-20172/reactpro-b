@@ -1,7 +1,3 @@
-//import React from 'react'
-
-//import { Redirect } from 'react-router'
-//<Redirect  to="/categorias/list" />
 import { CATEGORIA_LIST, CATEGORIA_ADD } from '../actions/categoria-action'
 
 const initialState = {
@@ -16,12 +12,9 @@ const categoriaReducer = (state = initialState, action) => {
             list: action.list
         }
         case CATEGORIA_ADD:
-            
-
             return {
                 ...state,
-                
-                list: state.categoria.concat(action.data)
+                //data: action.data // no usado aun
             }
 
         default: return state

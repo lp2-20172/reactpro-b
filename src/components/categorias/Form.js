@@ -5,7 +5,6 @@ import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField';
 
-
 import { save, getList } from '../../actions/categoria-action'
 import { connect } from 'react-redux'
 
@@ -37,7 +36,7 @@ class Form extends Component {
     }
 
     componentWillMount() {
-        //
+
     }
 
     handleChange = (event) => {
@@ -52,35 +51,14 @@ class Form extends Component {
     }
 
     handleSubmit = (event) => {
-        console.log('An essay was submitted: ' + this.state.codigo + ' ' + this.state.nombre);
-        //this.props.actions.updateCat(this.state);
-        //this.props.save(this.state).then( () => {
-         //   this.props.history.push('/categorias/list');
-        //});
-        this.props.save(this.state)
-        
-        //const data= this.state
-        //console.log('data:' + JSON.stringify(data))
-       // if (data) {
-                //this.props.getList("")
-        this.props.history.push('/categorias/list');
-          //  }
-  
-
-
-        //
-        
-
+        this.props.save(this.state, this.props.history)
+        //this.props.history.push('/categorias/list');
         event.preventDefault();
     }
 
     render() {
         //const { list } = this.props
-
-
-
         return (
-
             <Card>
                 <CardHeader
                     avatar={
@@ -91,39 +69,26 @@ class Form extends Component {
                     title="User Form"
                     subheader="Users Form"
                 />
-
                 <CardContent>
-
-
                     <form onSubmit={this.handleSubmit}>
                         <label>
                             Codigo:
-                    <input
-                                type="text"
-                                name="codigo"
-                                value={this.state.codigo}
-                                onChange={this.handleChange}
-                            />
+                            <input type="text" name="codigo" value={this.state.codigo} onChange={this.handleChange} />
                         </label>
                         <br />
 
                         <label>
                             Name:
-                            <input
-                                type="text"
-                                name="nombre"
-                                value={this.state.nombre}
-                                onChange={this.handleChange}
-                            />
+                            <input type="text" name="nombre" value={this.state.nombre} onChange={this.handleChange} />
                         </label>
                         <input type="submit" value="Submit" />
                     </form>
                 </CardContent>
-
             </Card>
-        );
+        )
     }
 }
+
 Form.propTypes = {
     //list: PropTypes.array
 }
@@ -136,7 +101,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        save: (d) => { dispatch(save(d)) },
+        save: (d, h) => { dispatch(save(d, h)) },
         getList: (q) => { dispatch(getList(q)) }
     }
 }
