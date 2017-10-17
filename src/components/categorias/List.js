@@ -7,7 +7,7 @@ import TextField from 'material-ui/TextField';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
 
-import { getList } from '../../actions/categoria-action'
+import { getList, del } from '../../actions/categoria-action'
 import { connect } from 'react-redux'
 
 import Button from 'material-ui/Button';
@@ -22,7 +22,6 @@ class List extends Component {
         this.props.getList("")
     }
 
-
     change = (e) => {
         const q = e.target.value
         console.log("q:" + q)
@@ -30,16 +29,11 @@ class List extends Component {
     }
 
     handleClick = () => {
-
-        console.log("handleClick:")
         this.props.history.push('/categorias/new');
     }
 
     render() {
-        const { list } = this.props
-
-
-
+        const { list, del } = this.props
         return (
 
             <Card>
@@ -65,11 +59,10 @@ class List extends Component {
                         onChange={this.change}
                         margin="normal"
                     />
-                    
 
-                        <Button fab color="primary" aria-label="add" onClick={this.handleClick}>
-                            <AddIcon />
-                        </Button>
+                    <Button fab color="primary" aria-label="add" onClick={this.handleClick}>
+                        <AddIcon />
+                    </Button>
 
                     <Paper style={{
                         overflowX: 'auto',
@@ -80,6 +73,8 @@ class List extends Component {
                                     <TableCell>#</TableCell>
                                     <TableCell >Nombre</TableCell>
                                     <TableCell >Código</TableCell>
+                                    <TableCell >Edit</TableCell>
+                                    <TableCell >Delete</TableCell>
                                 </TableRow>
                             </TableHead>
 
@@ -89,6 +84,12 @@ class List extends Component {
                                         <TableCell numeric>{index + 1}</TableCell>
                                         <TableCell >{d.nombre}</TableCell>
                                         <TableCell >{d.codigo}</TableCell>
+                                        <TableCell >
+                                            <Link to={`/categorias/edit/${d.id}`} className="ui basic button green">Edit</Link>
+                                        </TableCell>
+                                        <TableCell >
+                                            <Button onClick={() => del(d.id, this.props.history)} >Delete</Button>
+                                        </TableCell>
                                     </TableRow>
                                 )}
                             </TableBody>
@@ -110,10 +111,15 @@ const mapStateToProps = (state) => {
     }
 }
 
+/*
 const mapDispatchToProps = (dispatch) => {
     return {
-        getList: (q) => { dispatch(getList(q)) }
+        getList: (q) => { dispatch(getList(q)) },
+        del: (id, h) => { dispatch(del(id, h)) }
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(List)
+*/
+export default connect(mapStateToProps, {
+    getList,
+    del
+})(List)

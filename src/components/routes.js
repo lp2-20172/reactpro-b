@@ -63,6 +63,13 @@ const routes = [
         icon:'send',
         component: CategoriaForm
       },
+      {
+        path: '/categorias/edit/:id',
+        title: 'Edit!',
+        icon:'send',
+        component: CategoriaForm
+      },
+      
     ]
   }
 ]

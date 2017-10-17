@@ -5,7 +5,7 @@ import Avatar from 'material-ui/Avatar'
 import Typography from 'material-ui/Typography'
 import TextField from 'material-ui/TextField';
 
-import { save, getList } from '../../actions/categoria-action'
+import { save, getList, getById, update } from '../../actions/categoria-action'
 import { connect } from 'react-redux'
 
 import {
@@ -29,14 +29,30 @@ class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            id: null,
             codigo: '',
             nombre: ''
-        };
-
+        }
     }
 
-    componentWillMount() {
+    componentWillReceiveProps = (nextProps) => { // Load Asynchronously
+        const { data } = nextProps;
+        console.log('componentWillReceiveProps data:' + JSON.stringify(data))
+        this.setState({
+            id: data.id,
+            codigo: data.codigo,
+            nombre: data.nombre
+        })
+    }
 
+    componentWillMount = () => {
+        const { id } = this.props.match.params
+        if (id) {
+            this.props.getById(id)
+        }
+    }
+
+    componentDidMount = () => {
     }
 
     handleChange = (event) => {
@@ -51,13 +67,19 @@ class Form extends Component {
     }
 
     handleSubmit = (event) => {
-        this.props.save(this.state, this.props.history)
+        const { id } = this.props.match.params
+        if (id) {
+            //console.log('handleSubmit state:' + JSON.stringify(this.state))
+            this.props.update(this.state, this.props.history)
+        } else {
+            this.props.save(this.state, this.props.history)
+        }
         //this.props.history.push('/categorias/list');
         event.preventDefault();
     }
 
     render() {
-        //const { list } = this.props
+        //const { data } = this.props
         return (
             <Card>
                 <CardHeader
@@ -90,7 +112,7 @@ class Form extends Component {
 }
 
 Form.propTypes = {
-    //list: PropTypes.array
+    data: PropTypes.object
 }
 
 const mapStateToProps = (state) => {
@@ -98,12 +120,19 @@ const mapStateToProps = (state) => {
         data: state.categoria.data
     }
 }
-
+/*
 const mapDispatchToProps = (dispatch) => {
     return {
         save: (d, h) => { dispatch(save(d, h)) },
-        getList: (q) => { dispatch(getList(q)) }
+        getList: (q) => { dispatch(getList(q)) },
+        getById: (id) => { dispatch(getById(id)) },
+        update: (d, h) => { dispatch(update(d, h)) },
     }
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form)
+*/
+export default connect(mapStateToProps, {
+    save,
+    getList,
+    getById,
+    update
+})(Form)
